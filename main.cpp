@@ -1,60 +1,17 @@
 #include <iostream>
 #include "BigInt.h"
-#include <cassert> // For test assertions
-
-void test_sum()
-{
-    const int N = 16;
-    BigInt x[N] = {0, 10, -10, 999, -9999, 565, 545, 4, 7, 8, -88, -1, -88, -9, -4, 2994};
-    BigInt y[N] = {0, 10, -10, 1, -9999, 565, 545, 4, 7, 8, -88, -1, -88, -9, -4, 7};
-    int x1[N] = {0, 10, -10, 999, -9999, 565, 545, 4, 7, 8, -88, -1, -88, -9, -4, 2994};
-    int y1[N] = {0, 10, -10, 1, -9999, 565, 545, 4, 7, 8, -88, -1, -88, -9, -4, 7};
-
-    for (int i = 0; i < N; i++)
-    {
-
-        if (((x[i] + y[i]) == (x1[i] + y1[i])))
-        {
-            std::cout << x[i] << " + " << y[i] << "\033[32m" << " OK " << "\033[0m" << x[i] + y[i];
-            // (x[i] + y[i]).print();
-        }
-        else
-        {
-            std::cout << x[i] << " + " << y[i] << "\033[31m" << " NO " << "\033[0m";
-            (x[i] + y[i]).print();
-        }
-        std::cout << "\n";
-    }
-
-    BigInt c("-123456789012345678901234");
-    BigInt d("-9876543210987654");
-    BigInt result = c + d;
-    if (result == "-123456798888888889888888")
-    {
-        std::cout << c << " + " << d << "\033[32m" << " OK " << "\033[0m";
-        (d + c).print();
-    }
-    else
-    {
-        std::cout << "\033[31m" << " NO " << "\033[0m";
-        (d + c).print();
-    }
-}
+#include "tests/tests.h"
 
 int main()
 {
+
+    // test_creation();
+    // test_zero();
+    // test_addition(); // faild
+    test_subtraction(); // faild
+    // operator_small_test(); // checked
+
     // BigInt arr[] = {"+56", "56", "-413", "413", "+5", "-5", "5", +56, 56, -413, 413, +5, -5, 5, 0, 10001, -2002, -0, 1, 20003};
-
-    // for (BigInt &el : arr)
-    // {
-    //     std::cout << el << '\n';
-    // }
-    test_sum();
-
-    // BigInt a = "";
-    // a.print();
-
-    // std::cout << "\nmain ok";
 
     // const int N = 15;
     // BigInt x[N] = {0, 10, -10, 999, -9999, 565, 545, 4, 7, 8, -88, -1, -88, -9, -4};
