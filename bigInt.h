@@ -1,3 +1,6 @@
+#ifndef BigInt_H
+#define BigInt_H
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -58,26 +61,34 @@ public:
     //     return x >= k;
     // }
 
+    friend const BigInt operator+(const BigInt &a, const BigInt &b);
+    friend const BigInt operator-(const BigInt &a, const BigInt &b);
+
+    void swap(BigInt &b) 
+    {
+        using std::swap;
+        swap(_str, b._str);
+        swap(_sign, b._sign);
+    }
+
 public:
     BigInt(int num = 0);
     BigInt(const std::string &str);
     BigInt(const char *str);
 
-    // operators
+    BigInt(char ch) = delete;
 
+    // =========== arithmetic operation ===========
+    BigInt &operator+=(const BigInt &b);
+
+    // =========== conditional operation ===========
+    friend bool operator==(const BigInt &a, const BigInt &b);
+    friend bool operator!=(const BigInt &a, const BigInt &b);
+    friend bool operator<(const BigInt &a, const BigInt &b);
+
+    // =========== operators ===========
     friend std::ostream &operator<<(std::ostream &os, const BigInt &a);
 
-    friend const BigInt operator+(const BigInt &a, const BigInt &b);
-
-    // operator conditional
-    bool operator==(const BigInt &x) const
-    {
-        return (_sign == x._sign && _str == x._str);
-    }
-    bool operator!=(const BigInt &x) const
-    {
-        return (_sign != x._sign || _str != x._str);
-    }
     // bool operator>(BigInt &x) const
     // {
     //     if (sign != x.sign)
@@ -230,179 +241,7 @@ private:
 
 private:
     std::string _str;
-    bool _sign = 0;
+    bool _sign = 0; // 0 is positive
 };
 
-BigInt::BigInt(int num)
-{
-    parse(std::to_string(num));
-}
-
-BigInt::BigInt(const std::string &str)
-{
-    // std::cout << "string ctor\n";
-    parse(str);
-}
-BigInt::BigInt(const char *str)
-{
-    // std::cout << "char* ctor\n";
-    parse(str);
-}
-
-std::ostream &operator<<(std::ostream &os, const BigInt &a)
-{
-    if (a._sign)
-        os << '-';
-
-    int end = a._str.size() - 1;
-
-    os << (short)a._str[end];
-    for (int i = end - 1; i >= 0; i--)
-    {
-        if (a._str[i] < 10)
-            os << '0';
-
-        os << (short)a._str[i];
-    }
-
-    return os;
-}
-
-// operator arithmetic operation
-const BigInt operator+(const BigInt &a, const BigInt &b)
-{
-    // if (*this < 0 && x >= 0)
-    // {
-    //     tmp = *this;
-    //     tmp.sign = 0;
-    //     return (x - tmp);
-    // }
-    // if (x < 0 && *this >= 0)
-    // {
-    //     tmp = x;
-    //     tmp.sign = 0;
-    //     return (*this - tmp);
-    // }
-
-    BigInt tmp;
-    tmp._str = "";
-    if (a._sign == b._sign)
-    {
-        tmp._sign = a._sign; // or b._sign
-    }
-
-    int s1 = a._str.size();
-    int s2 = b._str.size();
-    int i = 0;
-
-    short num = 0;
-    short carry = 0;
-
-    while (i < s1 && i < s2)
-    {
-        num = (a._str[i] + b._str[i]) + carry;
-        carry = (num / 100);
-        tmp._str.push_back((num % 100));
-        ++i;
-    }
-
-    while (i < s1)
-    {
-        num = a._str[i++] + carry;
-        carry = (num / 100);
-        tmp._str.push_back((num % 100));
-    }
-
-    while (i < s2)
-    {
-        num = b._str[i++] + carry;
-        carry = (num / 100);
-        tmp._str.push_back((num % 100));
-    }
-
-    if (carry)
-        tmp._str.push_back(carry);
-
-    return tmp;
-}
-
-bool operator==(const BigInt &x, int y)
-{
-    return x == BigInt(y);
-}
-
-bool operator==(const BigInt &x,  BigInt &y)
-{
-    return x == y;
-}
-
-bool operator!=(const BigInt &x, int y)
-{
-    return x != BigInt(y);
-}
-
-void BigInt::print() const
-{
-    std::cout << "size: " << _str.size() << ":  ";
-    if (_sign)
-        std::cout << '-';
-    int end = _str.size() - 1;
-
-    std::cout << (short)_str[end];
-    for (int i = end - 1; i >= 0; i--)
-    {
-        if (_str[i] < 10)
-            std::cout << '0';
-
-        std::cout << (short)_str[i];
-    }
-    std::cout << std::endl;
-}
-
-void BigInt::parse(const std::string &strNum)
-{
-    int s = 0; // start
-    if (strNum[s] == '-' || strNum[s] == '+')
-    {
-        _sign = (strNum[s++] == '-') ? 1 : 0;
-    }
-
-    int size = strNum.length();
-    if (s == size)
-    {
-        std::cout << "Error: isn't digit:\t";
-        throw("ERROR isn't digit");
-    }
-
-    int j = s;
-    while (j < size)
-    {
-        if (!is_num(strNum[j++]))
-        {
-            std::cout << "Error: isn't digit:\t";
-            throw("ERROR isn't digit");
-        }
-    }
-
-    bool flag = 0;
-    if ((j - s) % 2 == 1)
-    {
-        flag = 1; // in this case the number of digits is odd and the first digit must be considered separately
-        ++s;
-    }
-
-    for (int i = j - 1; i >= s; i -= 2)
-    {
-        _str.push_back((strNum[i] - '0') + 10 * (strNum[i - 1] - '0'));
-    }
-
-    if (flag)
-    {
-        _str.push_back((strNum[--s] - '0')); // consider separately
-    }
-}
-
-bool BigInt::is_num(char ch) const
-{
-    return (ch >= '0' && ch <= '9');
-}
+#endif
