@@ -1,2 +1,7 @@
-.vscode
-./a.exe
+# Ignore the .vscode folder
+.vscode/
+
+
+# Ignore compiled object files and executables
+*.o
+*.exe
