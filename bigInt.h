@@ -42,6 +42,8 @@ public:
     // =========== arithmetic operation ===========
     BigInt &operator+=(const BigInt &b);
     BigInt &operator-=(const BigInt &b);
+    BigInt &operator++(); // prefix increment
+    BigInt &operator--(); // prefix decrement
 
 private:
     // =========== helpers ===========
