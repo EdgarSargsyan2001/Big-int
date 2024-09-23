@@ -1,15 +1,15 @@
+
 #include <iostream>
 #include "BigInt.h"
 #include "tests/tests.h"
 
 int main()
 {
-
-    // test_creation();
-    // test_zero();
-    // test_addition(); // faild
-    test_subtraction(); // faild
-    // operator_small_test(); // checked
+    test_creation();       // checked
+    test_zero();           // checked
+    test_addition();       // checked
+    test_subtraction();    // checked
+    operator_small_test(); // checked
 
     // BigInt arr[] = {"+56", "56", "-413", "413", "+5", "-5", "5", +56, 56, -413, 413, +5, -5, 5, 0, 10001, -2002, -0, 1, 20003};
 
