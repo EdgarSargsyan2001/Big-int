@@ -101,7 +101,7 @@ void operator_small_test()
     }
 
     std::swap(a, b);
-    if (a < b ) // operator_small_test_10
+    if (a < b) // operator_small_test_10
     {
         std::cout << "a < b == true: operator< -45 < -44 " << "\033[32m" << " OK " << "\033[0m \n";
     }
@@ -132,6 +132,25 @@ void operator_small_test()
         std::cout << "operator_small_test_12 " << "\033[31m" << " FAILD " << "\033[0m\n";
     }
 
+    a = 994477;
+    b = 994577;
+    if (a < b) // operator_small_test_13
+    {
+        std::cout << "a < b == true: operator< 994477 < 994577 " << "\033[32m" << " OK " << "\033[0m \n";
+    }
+    else
+    {
+        std::cout << "operator_small_test_13 " << "\033[31m" << " FAILD " << "\033[0m\n";
+    }
 
-
+    a = 9845774;
+    b = 9945774;
+    if (a < b) // operator_small_test_14
+    {
+        std::cout << "a < b == true: operator< 9845774 < 9945774 " << "\033[32m" << " OK " << "\033[0m \n";
+    }
+    else
+    {
+        std::cout << "operator_small_test_14 " << "\033[31m" << " FAILD " << "\033[0m\n";
+    }
 }
