@@ -128,7 +128,7 @@ BigInt &BigInt::operator+=(const BigInt &b)
         *this -= tmp;
         return *this;
     }
-    
+
     if (_sign == 0 && b._sign == 1)
     {
         *this -= b.abs();
@@ -241,12 +241,12 @@ BigInt &BigInt::operator-=(const BigInt &b)
 
 BigInt &BigInt::operator++()
 {
-    *this += BigInt(1);
+    *this += BigInt("1");
     return *this;
 }
 BigInt &BigInt::operator--()
 {
-    *this -= BigInt(1);
+    *this -= BigInt("1");
     return *this;
 }
 

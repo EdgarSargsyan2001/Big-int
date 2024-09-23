@@ -23,15 +23,9 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const BigInt &a);
 
 public:
-    struct ABS_tag // for copying abs
-    {
-    };
-
-public:
     BigInt(int num = 0);
     BigInt(const std::string &str);
     BigInt(const char *str);
-    BigInt(const BigInt &a, BigInt::ABS_tag);
     BigInt(char ch) = delete;
 
     // ===========  methods ===========
@@ -47,6 +41,11 @@ public:
 
 private:
     // =========== helpers ===========
+    struct ABS_tag // for copying abs
+    {
+    };
+    BigInt(const BigInt &a, BigInt::ABS_tag); //  for copying abs
+
     bool is_num(char ch) const;
     void parse(const std::string &strNum);
 
