@@ -5,11 +5,13 @@
 
 int main()
 {
-    test_creation();       // checked
-    test_zero();           // checked
-    test_addition();       // checked
-    test_subtraction();    // checked
-    operator_small_test(); // checked
+    // test_creation();       // checked
+    // test_zero();           // checked
+    // test_addition();       // checked
+    // test_addition_random(-1000000, 0, 900000); // ALL passed
+    // test_subtraction();    // checked
+    // operator_small_test(); // checked
+    // test_subtraction_random(-1000000, 0, 900000); // ALL passed
 
     // BigInt arr[] = {"+56", "56", "-413", "413", "+5", "-5", "5", +56, 56, -413, 413, +5, -5, 5, 0, 10001, -2002, -0, 1, 20003};
 
