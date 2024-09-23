@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../BigInt.h"
 #include <cassert>
+#include <random>
 
 void test_2();
 void test_3(int &);
@@ -268,4 +269,41 @@ void test_2()
     assert((BigInt("10000000000000000000") + BigInt("9999999999999999999")) == BigInt("19999999999999999999"));
 
     std::cout << "All tests passed!" << std::endl;
+}
+
+void test_addition_random(int start, int end, int count = 10)
+{
+    std::random_device rd;  // Obtain a random number from hardware
+    std::mt19937 gen(rd()); // Seed the generator
+    std::uniform_int_distribution<> distr(start, end);
+    int faild_count = 0;
+
+    for (int i = 0; i < count; ++i)
+    {
+        int num1 = distr(gen);
+        int num2 = distr(gen);
+        BigInt a = num1;
+        BigInt b = num2;
+        BigInt r = (a + b);
+        if (r != (num1 + num2))
+        {
+            std::cout << "\033[31m" << "test_addition_random Faild" << "\033[0m\n";
+            std::cout << "real num1: " << num1 << "\n";
+            std::cout << "real num2: " << num2 << "\n";
+            std::cout << "num1 + num2 = " << num1 + num2 << '\n';
+            std::cout << "BigInt a: " << a << "\n";
+            std::cout << "BigInt b: " << b << "\n";
+            std::cout << "a + b = " << r << '\n';
+            faild_count++;
+        }
+    }
+
+    if (faild_count)
+    {
+        std::cout << "addition random test passed " << count << "/" << count - faild_count << '\n';
+    }
+    else
+    {
+        std::cout << "\033[32m" << "addition random test passed " << count << "/" << count << "\033[0m \n";
+    }
 }

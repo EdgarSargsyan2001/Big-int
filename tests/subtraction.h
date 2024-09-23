@@ -249,3 +249,40 @@ void testBigIntSubtraction()
 
     std::cout << "All tests passed!" << '\n';
 }
+
+void test_subtraction_random(int start, int end, int count = 10)
+{
+    std::random_device rd;  // Obtain a random number from hardware
+    std::mt19937 gen(rd()); // Seed the generator
+    std::uniform_int_distribution<> distr(start, end);
+    int faild_count = 0;
+
+    for (int i = 0; i < count; ++i)
+    {
+        int num1 = distr(gen);
+        int num2 = distr(gen);
+        BigInt a = num1;
+        BigInt b = num2;
+        BigInt r = (a - b);
+        if (r != (num1 - num2))
+        {
+            std::cout << "\033[31m" << "test_subtraction_random Faild" << "\033[0m\n";
+            std::cout << "real num1: " << num1 << "\n";
+            std::cout << "real num2: " << num2 << "\n";
+            std::cout << "num1 - num2 = " << num1 - num2 << '\n';
+            std::cout << "BigInt a: " << a << "\n";
+            std::cout << "BigInt b: " << b << "\n";
+            std::cout << "a - b = " << r << '\n';
+            faild_count++;
+        }
+    }
+
+    if (faild_count)
+    {
+        std::cout << "subtraction random test passed " << count << "/" << count - faild_count << '\n';
+    }
+    else
+    {
+        std::cout << "\033[32m" << "subtraction random test passed  " << count << "/" << count << "\033[0m \n";
+    }
+}
