@@ -62,26 +62,17 @@ bool operator<(const BigInt &a, const BigInt &b)
     {
         if (s1 == s2)
         {
-            std::size_t end = s1 - 1;
-            if (a._sign == 1)
+            for (int i = s1 - 1; i >= 0; --i)
             {
-                return a._str[end] > b._str[end];
-            }
-            else
-            {
-                return a._str[end] < b._str[end];
+                if (a._str[i] != b._str[i])
+                {
+                    return a._sign ? a._str[i] > b._str[i] : a._str[i] < b._str[i];
+                }
             }
         }
         else
         {
-            if (a._sign == 1)
-            {
-                return s1 > s2;
-            }
-            else
-            {
-                return s1 < s2;
-            }
+            return a._sign ? s1 > s2 : s1 < s2;
         }
     }
 
