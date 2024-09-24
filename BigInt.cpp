@@ -107,7 +107,7 @@ void BigInt::print() const
 void BigInt::swap(BigInt &b)
 {
     using std::swap;
-    swap(_str, b._str);
+    _str.swap(b._str);
     swap(_sign, b._sign);
 }
 
