@@ -85,6 +85,24 @@ const BigInt BigInt::abs() const
     return BigInt(*this, BigInt::ABS_tag()); // abs copy
 }
 
+const std::string BigInt::get_num() const
+{
+    std::string str;
+    if (_sign)
+    {
+        str.push_back('-');
+    }
+
+    int len = _str.size();
+    str.reserve(len * 2 + 1);
+
+    for (int i = len - 1; i >= 0; i--)
+    {
+        str += std::to_string(_str[i]);
+    }
+    return str;
+}
+
 void BigInt::print() const
 {
     std::cout << "size: " << _str.size() << ":  ";

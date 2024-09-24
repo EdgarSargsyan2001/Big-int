@@ -30,6 +30,7 @@ public:
 
     // ===========  methods ===========
     const BigInt abs() const;
+    const std::string get_num() const;
     void print() const;
     void swap(BigInt &b);
 
