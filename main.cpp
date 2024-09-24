@@ -17,6 +17,9 @@ int main()
 
     // increment_and_decrement(-400000,-400000,900000);// ALL passed
 
+    // test_get_num();
+    // test_addition_random(-900000,90000000,5000000);
+
     // BigInt arr[] = {"+56", "56", "-413", "413", "+5", "-5", "5", +56, 56, -413, 413, +5, -5, 5, 0, 10001, -2002, -0, 1, 20003};
 
     // const int N = 15;
