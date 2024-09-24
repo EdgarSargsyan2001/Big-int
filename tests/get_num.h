@@ -64,6 +64,31 @@ void test_get_num()
         faild_count++;
     }
 
+    a = "7221606";
+    r = a.get_num();
+    std::cout << "size = " << r.size() << "  " << r << '\n';
+    if (r == "7221606") // test_addition_6
+    {
+        std::cout << "a.get_num() == \"-1234567897895489\": " << "\033[32m" << " OK " << "\033[0m \n";
+    }
+    else
+    {
+        std::cout << "test_addition_6 " << "\033[31m" << " FAILD " << "\033[0m\n";
+        faild_count++;
+    }
+    a = "221606";
+    r = a.get_num();
+    std::cout << "size = " << r.size() << "  " << r << '\n';
+    if (r == "221606") // test_addition_7
+    {
+        std::cout << "a.get_num() == \"-1234567897895489\": " << "\033[32m" << " OK " << "\033[0m \n";
+    }
+    else
+    {
+        std::cout << "test_addition_7 " << "\033[31m" << " FAILD " << "\033[0m\n";
+        faild_count++;
+    }
+
     if (faild_count)
     {
         std::cout << "\033[31m" << "faild count is " << faild_count << "\033[0m\n";
@@ -95,10 +120,10 @@ void test_get_num_random(int start, int end, int count = 10)
 
     if (faild_count)
     {
-        std::cout << "addition random test passed " << count << "/" << count - faild_count << '\n';
+        std::cout << "get_num random test passed " << count << "/" << count - faild_count << '\n';
     }
     else
     {
-        std::cout << "\033[32m" << "addition random test passed " << count << "/" << count << "\033[0m \n";
+        std::cout << "\033[32m" << "get_num random test passed " << count << "/" << count << "\033[0m \n";
     }
 }
