@@ -62,11 +62,10 @@ bool operator!=(const BigInt &a, const BigInt &b)
 
 bool operator<(const BigInt &a, const BigInt &b)
 {
-    std::size_t s1 = a._str.size();
-    std::size_t s2 = b._str.size();
-
     if (a._sign == b._sign)
     {
+        std::size_t s1 = a._str.size();
+        std::size_t s2 = b._str.size();
         if (s1 == s2)
         {
             for (int i = s1 - 1; i >= 0; --i)
