@@ -8,6 +8,13 @@ void swap(BigInt &a, BigInt &b)
     a.swap(b);
 }
 
+// =========== global operator ===========
+std::ostream &operator<<(std::ostream &os, const BigInt &a)
+{
+    os << a.get_num();
+    return os;
+}
+
 // =========== global arithmetic operation ===========
 const BigInt operator+(const BigInt &a, const BigInt &b)
 {
@@ -266,26 +273,6 @@ BigInt &BigInt::operator--()
 {
     *this -= BigInt("1");
     return *this;
-}
-
-// =========== friend log operator ===========
-std::ostream &operator<<(std::ostream &os, const BigInt &a)
-{
-    if (a._sign)
-        os << '-';
-
-    int end = a._str.size() - 1;
-
-    os << (short)a._str[end];
-    for (int i = end - 1; i >= 0; i--)
-    {
-        if (a._str[i] < 10)
-            os << '0';
-
-        os << (short)a._str[i];
-    }
-
-    return os;
 }
 
 // =========== helpers ===========

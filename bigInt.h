@@ -5,7 +5,11 @@
 #include <algorithm>
 
 class BigInt;
+
 void swap(BigInt &a, BigInt &b); // global swap
+
+// =========== global operator ===========
+std::ostream &operator<<(std::ostream &os, const BigInt &a);
 
 // =========== global arithmetic operation ===========
 const BigInt operator+(const BigInt &a, const BigInt &b);
@@ -18,9 +22,6 @@ public:
     friend bool operator==(const BigInt &a, const BigInt &b);
     friend bool operator!=(const BigInt &a, const BigInt &b);
     friend bool operator<(const BigInt &a, const BigInt &b);
-
-    // =========== friend log operator ===========
-    friend std::ostream &operator<<(std::ostream &os, const BigInt &a);
 
 public:
     BigInt(int num = 0);
