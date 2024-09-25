@@ -12,9 +12,9 @@ void swap(BigInt &a, BigInt &b); // O(1) // global swap
 std::ostream &operator<<(std::ostream &os, const BigInt &a); // O(N)
 
 // =========== global arithmetic operation ===========
-const BigInt operator+(const BigInt &a, const BigInt &b); // O(N + M)
-const BigInt operator-(const BigInt &a, const BigInt &b); // O(N + M)
-const BigInt operator*(const BigInt &a, const BigInt &b); // ??
+const BigInt operator+(const BigInt &a, const BigInt &b); // O(max(N, M))
+const BigInt operator-(const BigInt &a, const BigInt &b); // O(max(N, M))
+const BigInt operator*(const BigInt &a, const BigInt &b); // O(N * M)
 
 class BigInt
 {
@@ -35,11 +35,12 @@ public:
     const std::string get_num() const; // O(N)
     void swap(BigInt &b);              // O(1)
     void mul_base();                   // O(N) // base is 100
+
     void print() const;
 
     // =========== arithmetic operation ===========
-    BigInt &operator+=(const BigInt &b); // O(N + M)
-    BigInt &operator-=(const BigInt &b); // O(N + M)
+    BigInt &operator+=(const BigInt &b); // O(max(N, M))
+    BigInt &operator-=(const BigInt &b); // O(max(N, M))
     BigInt &operator++();                // O(N) prefix increment
     BigInt &operator--();                // O(N) prefix decrement
     BigInt &operator*=(const BigInt &b); // O(N * M)
