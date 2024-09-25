@@ -18,7 +18,27 @@ int main()
     // increment_and_decrement(-400000,-400000,900000);// ALL passed
 
     // test_get_num();
-    // test_addition_random(-900000,90000000,5000000);
+    // test_get_num_random(INT_MIN,INT_MAX,5000000);
+
+    // test_multiplication();
+    // test_multiplication_random(-40000, 40000, 900000);
+
+    // BigInt exp = "184467";
+    // BigInt b = 1;
+
+    // for (BigInt i = 0; i < exp; ++i)
+    // {
+    //     b *= BigInt(2);
+    // }
+
+    // std::cout << b;
+
+    // BigInt x = 0;
+    // x.mul_base();
+    // x.mul_base();
+    // std::cout << x;
+
+    // std::cout << r;
 
     // BigInt arr[] = {"+56", "56", "-413", "413", "+5", "-5", "5", +56, 56, -413, 413, +5, -5, 5, 0, 10001, -2002, -0, 1, 20003};
 
