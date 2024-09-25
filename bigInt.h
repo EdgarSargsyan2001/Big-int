@@ -14,6 +14,7 @@ std::ostream &operator<<(std::ostream &os, const BigInt &a); // O(N)
 // =========== global arithmetic operation ===========
 const BigInt operator+(const BigInt &a, const BigInt &b); // O(N + M)
 const BigInt operator-(const BigInt &a, const BigInt &b); // O(N + M)
+const BigInt operator*(const BigInt &a, const BigInt &b); // ??
 
 class BigInt
 {
@@ -33,6 +34,7 @@ public:
     const BigInt abs() const;          // O(N)
     const std::string get_num() const; // O(N)
     void swap(BigInt &b);              // O(1)
+    void mul_base();                   // O(N) // base is 100
     void print() const;
 
     // =========== arithmetic operation ===========
@@ -40,6 +42,7 @@ public:
     BigInt &operator-=(const BigInt &b); // O(N + M)
     BigInt &operator++();                // O(N) prefix increment
     BigInt &operator--();                // O(N) prefix decrement
+    BigInt &operator*=(const BigInt &b); // O(N * M)
 
 private:
     // =========== helpers ===========

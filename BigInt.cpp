@@ -26,6 +26,11 @@ const BigInt operator-(const BigInt &a, const BigInt &b)
     return BigInt(a) -= b;
 }
 
+const BigInt operator*(const BigInt &a, const BigInt &b)
+{
+    return BigInt(a) *= b;
+}
+
 // =========== ctors ===========
 BigInt::BigInt(int num)
 {
@@ -102,8 +107,14 @@ const std::string BigInt::get_num() const
     int len = _str.size();
     str.reserve(len * 2 + 1);
 
-    for (int i = len - 1; i >= 0; i--)
+    str += std::to_string(_str[len - 1]);
+    for (int i = len - 2; i >= 0; i--)
     {
+
+        if (_str[i] < 10)
+        {
+            str += "0";
+        }
         str += std::to_string(_str[i]);
     }
     return str;
@@ -133,6 +144,14 @@ void BigInt::swap(BigInt &b)
     using std::swap;
     _str.swap(b._str);
     swap(_sign, b._sign);
+}
+
+void BigInt::mul_base() // base is 100
+{
+    if (_str[0] != 0 || _str.size() != 1)
+    {
+        _str.insert(_str.begin(), 0);
+    }
 }
 
 // =========== arithmetic operation ===========
@@ -192,7 +211,9 @@ BigInt &BigInt::operator+=(const BigInt &b)
     }
 
     if (carry)
+    {
         _str.push_back(carry);
+    }
 
     return *this;
 }
@@ -271,6 +292,67 @@ BigInt &BigInt::operator++()
 BigInt &BigInt::operator--()
 {
     *this -= BigInt("1");
+    return *this;
+}
+
+BigInt &BigInt::operator*=(const BigInt &b)
+{
+    if (b == 0 || *this == 0)
+    {
+        return *this = 0;
+    }
+
+    if (this == &b)
+    {
+        BigInt newB(b);
+        return *this *= newB;
+    }
+
+    BigInt a(*this);
+    _str = "";
+
+    std::size_t l1 = a._str.size();
+    std::size_t l2 = b._str.size();
+
+    bool bigger = 0;
+    if (l1 < l2)
+    {
+        bigger = 1;
+        std::swap(l1, l2);
+    }
+
+    for (int i = 0; i < l2; ++i)
+    {
+        short op1 = bigger ? a._str[i] : b._str[i];
+
+        BigInt x;
+        x._str = "";
+
+        short carry = 0;
+        for (int l = 0; l < i; ++l)
+        {
+            x._str += '\0'; // increase by degrees of the base
+        }
+
+        for (int j = 0; j < l1; ++j)
+        {
+            short op2 = bigger ? b._str[j] : a._str[j];
+            op2 *= op1;
+            op2 += carry;
+
+            carry = (op2 / 100);
+            x._str.push_back(op2 % 100);
+        }
+        if (carry)
+        {
+            x._str.push_back(carry);
+        }
+
+        *this += x;
+    }
+
+    _sign = a._sign != b._sign;
+
     return *this;
 }
 
@@ -361,87 +443,6 @@ bool BigInt::is_num(char ch) const
 // bool operator<=(BigInt &x) const
 // {
 //     return ((*this == x) || (*this < x));
-// }
-
-// operator arithmetic operation
-// BigInt operator+(BigInt &x)
-// {
-//     BigInt tmp;
-//     if (*this < 0 && x >= 0)
-//     {
-//         tmp = *this;
-//         tmp.sign = 0;
-//         return (x - tmp);
-//     }
-//     if (x < 0 && *this >= 0)
-//     {
-//         tmp = x;
-//         tmp.sign = 0;
-//         return (*this - tmp);
-//     }
-
-//     if (sign == x.sign)
-//         tmp.sign = sign;
-
-//     short carry = 0;
-//     for (short i = 0, j = 0; i < str.size() || j < x.str.size();)
-//     {
-//         short op1 = i < str.size() ? (str[i++]) : 0;
-//         short op2 = j < x.str.size() ? (x.str[j++]) : 0;
-//         short num = (op1 + op2) + carry;
-//         carry = (num / 100);
-//         tmp.str.push_back((num % 100));
-//     }
-//     if (carry)
-//         tmp.str.push_back(carry);
-
-//     return tmp;
-// }
-
-// BigInt operator-(BigInt &x)
-// {
-//     BigInt tmp;
-//     if (*this <= 0 && x <= 0)
-//     {
-//         tmp = x;
-//         tmp.sign = 0;
-//         return tmp + *this;
-//     }
-//     if (*this <= 0 && x >= 0)
-//     {
-//         tmp = *this;
-//         tmp.sign = 0;
-//         tmp = tmp + x;
-//         tmp.sign = 1;
-//         return tmp;
-//     }
-//     if (*this >= 0 && x <= 0)
-//     {
-//         tmp = x;
-//         tmp.sign = 0;
-//         return tmp + *this;
-//     }
-//     std::string s1 = str, s2 = x.str;
-//     if (*this < x)
-//         s1.swap(s2), tmp.sign = 1;
-
-//     short borrow = 0;
-//     for (short i = 0, j = 0; i < s1.size() || j < s2.size();)
-//     {
-//         short op1 = i < s1.size() ? (s1[i++] - borrow) : (0 - borrow);
-//         short op2 = j < s2.size() ? (s2[j++]) : 0;
-//         borrow = (op1 < op2) ? 1 : 0;
-//         short num = op1 - op2 + 100 * borrow;
-//         tmp.str.push_back((num % 100));
-//     }
-
-//     while (*(tmp.str.end() - 1) == '\0' && !tmp.str.empty())
-//         tmp.str.pop_back();
-
-//     if (tmp.str.empty())
-//         tmp = 0;
-
-//     return tmp;
 // }
 
 // BigInt operator*(BigInt &x)
