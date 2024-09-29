@@ -1,6 +1,7 @@
 #include "Bigint.h"
 #include <utility> // For std::swap
 #include <iostream>
+#include <unordered_map>
 
 void swap(BigInt &a, BigInt &b)
 {
@@ -405,6 +406,8 @@ BigInt &BigInt::operator/=(const BigInt &b)
 
     std::size_t l2 = divisor._str.size();
 
+    std::unordered_map<char, BigInt> memo_mul; // memorization for multiplication
+
     while (divisor <= divided)
     {
         std::size_t l1 = divided._str.size();
@@ -419,20 +422,32 @@ BigInt &BigInt::operator/=(const BigInt &b)
 
         std::size_t diff_size = diff._str.size();
 
-        for (int i = 1; i <= 100; ++i)
-        {
-            if (diff <= (divisor * i))
-            {
-                if (diff < (divisor * i))
-                {
-                    --i;
-                }
+        int low = 1;
+        int high = 100;
+        BigInt result = 0;
 
-                diff -= (divisor * i);
-                _str.insert(_str.begin(), i);
-                break;
+        while (low <= high) // log (100) => 7
+        {
+            short mid = low + (high - low) / 2;
+
+            if (memo_mul.count(mid) == 0)
+            {
+                memo_mul.emplace(mid, mid * divisor);
+            }
+
+            if (memo_mul[mid] <= diff)
+            {
+                result = memo_mul[mid];
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
             }
         }
+
+        diff -= result;
+        _str.insert(_str.begin(), high);
 
         for (auto it = diff._str.rbegin(); it != diff._str.rend() && *it == 0; ++it) // delete leading zeros
         {
@@ -449,7 +464,7 @@ BigInt &BigInt::operator/=(const BigInt &b)
         BigInt new_divided;
         new_divided._str = diff._str;
 
-        for (int i= start; i >= 0; --i)
+        for (int i = start; i >= 0; --i)
         {
             new_divided._str.insert(new_divided._str.begin(), divided._str[i]);
             if (new_divided < divisor)
