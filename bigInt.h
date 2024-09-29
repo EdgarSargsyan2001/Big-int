@@ -15,6 +15,7 @@ std::ostream &operator<<(std::ostream &os, const BigInt &a); // O(N)
 const BigInt operator+(const BigInt &a, const BigInt &b); // O(max(N, M))
 const BigInt operator-(const BigInt &a, const BigInt &b); // O(max(N, M))
 const BigInt operator*(const BigInt &a, const BigInt &b); // O(N * M)
+const BigInt operator/(const BigInt &a, const BigInt &b); // ??
 
 class BigInt
 {
@@ -23,6 +24,7 @@ public:
     friend bool operator==(const BigInt &a, const BigInt &b); // O(N)
     friend bool operator!=(const BigInt &a, const BigInt &b); // O(N)
     friend bool operator<(const BigInt &a, const BigInt &b);  // O(N) // Best-case-> O(1)
+    friend bool operator<=(const BigInt &a, const BigInt &b);  // O(N) // Best-case-> O(1)
 
 public:
     BigInt(int num = 0);            // O(N) where N is the size of the member string (_str)
@@ -44,6 +46,7 @@ public:
     BigInt &operator++();                // O(N) prefix increment
     BigInt &operator--();                // O(N) prefix decrement
     BigInt &operator*=(const BigInt &b); // O(N * M)
+    BigInt &operator/=(const BigInt &b); //
 
 private:
     // =========== helpers ===========

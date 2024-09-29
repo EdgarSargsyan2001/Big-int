@@ -31,6 +31,11 @@ const BigInt operator*(const BigInt &a, const BigInt &b)
     return BigInt(a) *= b;
 }
 
+const BigInt operator/(const BigInt &a, const BigInt &b)
+{
+    return BigInt(a) /= b;
+}
+
 // =========== ctors ===========
 BigInt::BigInt(int num)
 {
@@ -88,6 +93,11 @@ bool operator<(const BigInt &a, const BigInt &b)
     }
 
     return a._sign; //  (a._sign == 1) ? true : false
+}
+
+bool operator<=(const BigInt &a, const BigInt &b)
+{
+    return ((a == b) || (a < b));
 }
 
 // =========== const methods ===========
@@ -309,7 +319,7 @@ BigInt &BigInt::operator*=(const BigInt &b)
     }
 
     BigInt a(*this);
-    _str = "";
+    *this = 0;
 
     std::size_t l1 = a._str.size();
     std::size_t l2 = b._str.size();
@@ -347,12 +357,111 @@ BigInt &BigInt::operator*=(const BigInt &b)
         {
             x._str.push_back(carry);
         }
-
         *this += x;
     }
 
     _sign = a._sign != b._sign;
 
+    return *this;
+}
+
+BigInt &BigInt::operator/=(const BigInt &b)
+{
+    if (b == 0)
+    {
+        throw std::invalid_argument("ERROR dividing by 0");
+    }
+    if (this == &b)
+    {
+        return *this = BigInt(1);
+    }
+    if (b == BigInt(1) || b == BigInt(-1))
+    {
+        _sign = b._sign;
+        return *this;
+    }
+
+    BigInt b_abs = b.abs();
+    BigInt this_abs = this->abs();
+
+    if (b_abs == this_abs)
+    {
+        if (_sign != b._sign)
+        {
+            return *this = BigInt(-1);
+        }
+        return *this = BigInt(1);
+    }
+
+    if (this_abs < b_abs)
+    {
+        return *this = BigInt(0);
+    }
+
+    _str = ""; // clear this _str. I have this copy
+
+    BigInt &divided = this_abs;
+    BigInt &divisor = b_abs;
+
+    std::size_t l2 = divisor._str.size();
+
+    while (divisor <= divided)
+    {
+        std::size_t l1 = divided._str.size();
+
+        BigInt diff;
+        diff._str = divided._str.substr(l1 - l2);
+
+        if (diff < divisor)
+        {
+            diff._str.insert(diff._str.begin(), divided._str[l1 - (l2 + 1)]);
+        }
+
+        std::size_t diff_size = diff._str.size();
+
+        for (int i = 1; i <= 100; ++i)
+        {
+            if (diff <= (divisor * i))
+            {
+                if (diff < (divisor * i))
+                {
+                    --i;
+                }
+
+                diff -= (divisor * i);
+                _str.insert(_str.begin(), i);
+                break;
+            }
+        }
+
+        for (auto it = diff._str.rbegin(); it != diff._str.rend() && *it == 0; ++it) // delete leading zeros
+        {
+            diff._str.pop_back();
+        }
+
+        int start = l1 - diff_size - 1;
+        while (divided._str[start] == 0 && diff._str.empty() && start >= 0)
+        {
+            this->mul_base();
+            --start;
+        }
+
+        BigInt new_divided;
+        new_divided._str = diff._str;
+
+        for (int i= start; i >= 0; --i)
+        {
+            new_divided._str.insert(new_divided._str.begin(), divided._str[i]);
+            if (new_divided < divisor)
+            {
+                this->mul_base();
+            }
+        }
+
+        divided = new_divided;
+    }
+
+    _sign = _sign != b._sign;
     return *this;
 }
 
@@ -432,42 +541,8 @@ bool BigInt::is_num(char ch) const
 
 //     return str.size() == x.str.size() ? (str < x.str) : (str.size() < x.str.size());
 // }
-// bool operator<(BigInt &x) const
-// {
-//     return (!(*this == x) && !(*this > x));
-// }
+
 // bool operator>=(BigInt &x) const
 // {
 //     return ((*this == x) || (*this > x));
-// }
-// bool operator<=(BigInt &x) const
-// {
-//     return ((*this == x) || (*this < x));
-// }
-
-// BigInt operator*(BigInt &x)
-// {
-//     BigInt tmp = 0;
-//     // x = tmp;
-//     if (*this == 0 || x == 0)
-//         return tmp;
-
-//     BigInt k = 0;
-//     BigInt op1 = x <= *this ? *this : x;
-//     std::string st = x < *this ? x.str : str;
-//     for (int i = 0; i < st.length(); i++)
-//     {
-//         for (int j = 0; j < st[i]; j++)
-//             k = k + op1;
-//         k << i;
-//         // k.print();
-//         tmp = tmp + k;
-//         k = 0;
-//     }
-//     if (*this < 0 || x < 0)
-//         tmp.sign = 1;
-//     if (*this < 0 && x < 0)
-//         tmp.sign = 0;
-
-//     return tmp;
 // }
