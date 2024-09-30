@@ -313,9 +313,14 @@ BigInt &BigInt::operator--()
 
 BigInt &BigInt::operator*=(const BigInt &b)
 {
-    if (b == 0 || *this == 0)
+    if (b == BigInt(0) || *this == BigInt(0))
     {
         return *this = 0;
+    }
+
+    if (b == BigInt(1))
+    {
+        return *this;
     }
 
     if (this == &b)
@@ -337,32 +342,37 @@ BigInt &BigInt::operator*=(const BigInt &b)
         std::swap(l1, l2);
     }
 
+    std::unordered_map<char, std::string> memo_mul;
     for (int i = 0; i < l2; ++i)
     {
         short op1 = bigger ? a._str[i] : b._str[i];
+        if (op1 == 0)
+        {
+            continue;
+        }
+
+        if (memo_mul.count(op1) == 0)
+        {
+            short carry = 0;
+            std::string m;
+            for (int j = 0; j < l1; ++j)
+            {
+                short op2 = bigger ? b._str[j] : a._str[j];
+                op2 *= op1;
+                op2 += carry;
+
+                carry = (op2 / 100);
+                m.push_back(op2 % 100);
+            }
+            if (carry)
+            {
+                m.push_back(carry);
+            }
+            memo_mul.emplace(op1, m);
+        }
 
         BigInt x;
-        x._str = "";
-
-        short carry = 0;
-        for (int l = 0; l < i; ++l)
-        {
-            x._str += '\0'; // increase by degrees of the base
-        }
-
-        for (int j = 0; j < l1; ++j)
-        {
-            short op2 = bigger ? b._str[j] : a._str[j];
-            op2 *= op1;
-            op2 += carry;
-
-            carry = (op2 / 100);
-            x._str.push_back(op2 % 100);
-        }
-        if (carry)
-        {
-            x._str.push_back(carry);
-        }
+        x._str = std::string(i, '\0') + memo_mul[op1];
         *this += x;
     }
 
