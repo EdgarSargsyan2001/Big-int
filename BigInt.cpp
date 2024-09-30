@@ -19,22 +19,22 @@ std::ostream &operator<<(std::ostream &os, const BigInt &a)
 // =========== global arithmetic operation ===========
 const BigInt operator+(const BigInt &a, const BigInt &b)
 {
-    return BigInt(a) += b;
+    return BigInt(a) += b; // it will be subject to RVO
 }
 
 const BigInt operator-(const BigInt &a, const BigInt &b)
 {
-    return BigInt(a) -= b;
+    return BigInt(a) -= b; // it will be subject to RVO
 }
 
 const BigInt operator*(const BigInt &a, const BigInt &b)
 {
-    return BigInt(a) *= b;
+    return BigInt(a) *= b; // it will be subject to RVO
 }
 
 const BigInt operator/(const BigInt &a, const BigInt &b)
 {
-    return BigInt(a) /= b;
+    return BigInt(a) /= b; // it will be subject to RVO
 }
 
 // =========== ctors ===========
@@ -129,6 +129,11 @@ const std::string BigInt::get_num() const
         str += std::to_string(_str[i]);
     }
     return str;
+}
+
+bool BigInt::is_even() const
+{
+    return (_str.front() & 1) == 0;
 }
 
 void BigInt::print() const

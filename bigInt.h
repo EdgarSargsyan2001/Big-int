@@ -24,7 +24,7 @@ public:
     friend bool operator==(const BigInt &a, const BigInt &b); // O(N)
     friend bool operator!=(const BigInt &a, const BigInt &b); // O(N)
     friend bool operator<(const BigInt &a, const BigInt &b);  // O(N) // Best-case-> O(1)
-    friend bool operator<=(const BigInt &a, const BigInt &b);  // O(N) // Best-case-> O(1)
+    friend bool operator<=(const BigInt &a, const BigInt &b); // O(N) // Best-case-> O(1)
 
 public:
     BigInt(int num = 0);            // O(N) where N is the size of the member string (_str)
@@ -35,9 +35,9 @@ public:
     // ===========  methods ===========
     const BigInt abs() const;          // O(N)
     const std::string get_num() const; // O(N)
+    bool is_even() const;              // O(1)
     void swap(BigInt &b);              // O(1)
     void mul_base();                   // O(N) // base is 100
-
     void print() const;
 
     // =========== arithmetic operation ===========
@@ -55,7 +55,7 @@ private:
     };
     BigInt(const BigInt &a, BigInt::ABS_tag); // O(N) //  for copying abs
 
-    bool is_num(char ch) const;            // O(N)
+    bool is_num(char ch) const;            // O(1)
     void parse(const std::string &strNum); // O(K)  where K is the size of the string passed
 
 private:
